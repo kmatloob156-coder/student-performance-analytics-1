@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block content %}
+<div class="container"><div class="box"><h1>🏆 Top 5 Students</h1>
+<table><tr><th>Rank</th><th>Name</th><th>Marks</th><th>Grade</th></tr>
+{% for s in students %}<tr><td>{{loop.index}}</td><td>{{s.name}}</td><td>{{s.marks}}</td><td>{{grade(s.marks)}}</td></tr>{% endfor %}
+</table></div></div>{% endblock %}
