@@ -23,7 +23,7 @@ def init_db():
         semester TEXT, marks REAL DEFAULT 0, attendance REAL DEFAULT 0,
         skills TEXT DEFAULT '', placement_status TEXT DEFAULT 'Preparing')""")
     con.commit(); con.close()
-
+init_db()
 @app.route("/")
 def index():
     con=db(); students=con.execute("SELECT * FROM students ORDER BY id DESC").fetchall(); con.close()
