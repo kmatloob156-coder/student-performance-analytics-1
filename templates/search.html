@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}
+<div class="container"><div class="box"><h1>Search Student</h1>
+<form class="search" method="get"><input name="name" value="{{query}}" placeholder="Enter student name"><button class="primary">Search</button></form>
+{% if query %}<h3>Results for "{{query}}"</h3>{% endif %}
+{% if students %}{% for s in students %}<p><b>{{s.name}}</b> — Marks: {{s.marks}}, Attendance: {{s.attendance}}%, Grade: {{grade(s.marks)}}</p>{% endfor %}
+{% elif query %}<p>Student not found.</p>{% endif %}
+</div></div>{% endblock %}
