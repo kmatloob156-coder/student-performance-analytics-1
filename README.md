@@ -1,27 +1,44 @@
-# Student Performance & Placement Analytics System
+Student Performance Analytics System - MCA Major Project
 
-An MCA major project built with Python Flask, SQLite, HTML/CSS and Chart.js.
+A phone-friendly web version of the original Python Student Performance Analytics program.
 
-## Features
-- Student record management
-- Marks and attendance tracking
-- Dashboard statistics
-- Performance analytics charts
-- Placement status tracking
-- Mobile-friendly UI
-- Ready for GitHub and Render deployment
 
-## Run locally
-```bash
+Backend logic
+
+The Flask backend follows the original program:
+
+
+
+grade() calculates A+, A, B, C, D and F.
+
+Dashboard calculates total students, average marks, average attendance and pass rate.
+
+Top 5 sorts students by marks.
+
+Search finds students by name.
+
+Low attendance finds students below 75%.
+
+Add Student validates marks and attendance from 0-100.
+
+
+Demo data
+
+The project starts with the same 10 demo students from the original program:
+Aman, Rahul, Priya, Neha, Rohit, Simran, Vikas, Anjali, Karan and Pooja.
+
+
+Run
+
 pip install -r requirements.txt
 python app.py
-```
-Open http://127.0.0.1:5000
 
-## Deployment
-Push this repository to GitHub and create a Render Web Service.
-Build command: `pip install -r requirements.txt`
-Start command: `gunicorn app:app`
+Render
 
-## Academic use
-This project demonstrates Python/Flask web development, database management, data analytics, UI design and deployment.
+Build command:
+pip install -r requirements.txt
+
+
+Start command:
+gunicorn app:app
+
