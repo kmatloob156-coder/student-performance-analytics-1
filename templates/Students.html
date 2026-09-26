@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block content %}
+<div class="container"><div class="box">
+<h1>All Students</h1>
+<table><tr><th>#</th><th>Name</th><th>Marks</th><th>Attendance</th><th>Grade</th></tr>
+{% for s in students %}
+<tr><td>{{loop.index}}</td><td>{{s.name}}</td><td>{{s.marks}}</td><td>{{s.attendance}}%</td><td><span class="badge">{{grade(s.marks)}}</span></td></tr>
+{% endfor %}</table>
+</div></div>{% endblock %}
