@@ -1,1 +1,22 @@
-{% extends "base.html" %}{% block content %}<div class="container"><section class="hero"><h1>Student Performance & Placement Analytics</h1><p>MCA Major Project • Academic Dashboard</p><a class="btn" href="/add">Add Student</a></section><div class="cards"><div class="card">Students<div class="num">{{total}}</div></div><div class="card">Average Marks<div class="num">{{avg_marks}}%</div></div><div class="card">Attendance<div class="num">{{avg_att}}%</div></div><div class="card">Placed<div class="num">{{placed}}</div></div></div><div class="tablebox"><h2>Student Records</h2><table><tr><th>Name</th><th>Roll</th><th>Semester</th><th>Marks</th><th>Attendance</th><th>Placement</th><th></th></tr>{% for s in students %}<tr><td>{{s.name}}</td><td>{{s.roll}}</td><td>{{s.semester}}</td><td>{{s.marks}}%</td><td>{{s.attendance}}%</td><td>{{s.placement_status}}</td><td><a href="/delete/{{s.id}}">Delete</a></td></tr>{% else %}<tr><td colspan="7">No students added yet.</td></tr>{% endfor %}</table></div></div>{% endblock %}
+{% extends "base.html" %}{% block content %}
+<div class="container">
+<section class="hero">
+<h1>Student Performance Analytics System</h1>
+<p>MCA Major Project • Academic Performance Dashboard</p>
+<a class="btn" href="/add">+ Add Student</a>
+</section>
+<div class="cards">
+<div class="card">Total Students<div class="num">{{total}}</div></div>
+<div class="card">Average Marks<div class="num">{{"%.2f"|format(avg_marks)}}%</div></div>
+<div class="card">Average Attendance<div class="num">{{"%.2f"|format(avg_att)}}%</div></div>
+<div class="card">Pass Rate<div class="num">{{"%.2f"|format(pass_rate)}}%</div></div>
+</div>
+<div class="tablebox">
+<h2>Quick Student Report</h2>
+<table><tr><th>Name</th><th>Marks</th><th>Attendance</th><th>Grade</th></tr>
+{% for s in students %}
+<tr><td>{{s.name}}</td><td>{{s.marks}}%</td><td>{{s.attendance}}%</td>
+<td><span class="badge">{% if s.marks>=90 %}A+{% elif s.marks>=80 %}A{% elif s.marks>=70 %}B{% elif s.marks>=60 %}C{% elif s.marks>=50 %}D{% else %}F{% endif %}</span></td></tr>
+{% endfor %}</table>
+</div>
+</div>{% endblock %}
