@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <h2>✏️ Edit Student</h2>
+
+    <form method="POST" class="student-form">
+
+        <label>Student Name</label>
+
+        <input
+            type="text"
+            name="name"
+            value="{{ student.name }}"
+            required
+        >
+
+        <label>Marks</label>
+
+        <input
+            type="number"
+            name="marks"
+            value="{{ student.marks }}"
+            min="0"
+            max="100"
+            step="0.01"
+            required
+        >
+
+        <label>Attendance (%)</label>
+
+        <input
+            type="number"
+            name="attendance"
+            value="{{ student.attendance }}"
+            min="0"
+            max="100"
+            step="0.01"
+            required
+        >
+
+        <button type="submit">
+            💾 Update Student
+        </button>
+
+        <a href="{{ url_for('show_students') }}">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+<style>
+
+.container {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.student-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.student-form input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.student-form button {
+    padding: 12px;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.student-form a {
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+}
+
+</style>
+
+{% endblock %}
