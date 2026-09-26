@@ -1,11 +1,12 @@
 import os
 import sys
 import sqlite3
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 app = Flask(__name__)
+app.secret_key = "secret_key_student_analytics"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, 'student.db')
@@ -33,6 +34,7 @@ def init_db():
     cur.execute("SELECT COUNT(*) FROM students")
     count = cur.fetchone()[0]
     
+    # Auto-insert 30 sample students if database is empty
     if count == 0:
         sample_students = [
             ('Aarav Sharma', 'MCA202401', 'MCA', 'Sem 3', 85.5, 92.0, 'Python, SQL', 'Placed'),
@@ -114,8 +116,8 @@ def add():
         roll = request.form['roll']
         course = request.form.get('course', 'MCA')
         semester = request.form.get('semester', '')
-        marks = request.form.get('marks', 0)
-        attendance = request.form.get('attendance', 0)
+        marks = float(request.form.get('marks', 0))
+        attendance = float(request.form.get('attendance', 0))
         skills = request.form.get('skills', '')
         placement_status = request.form.get('placement_status', 'Preparing')
 
@@ -127,6 +129,7 @@ def add():
         """, (name, roll, course, semester, marks, attendance, skills, placement_status))
         con.commit()
         con.close()
+        flash("Student added successfully!")
         return redirect(url_for('index'))
     return render_template('form.html', action='Add', student=None)
 
@@ -139,8 +142,8 @@ def edit(id):
         roll = request.form['roll']
         course = request.form.get('course', 'MCA')
         semester = request.form.get('semester', '')
-        marks = request.form.get('marks', 0)
-        attendance = request.form.get('attendance', 0)
+        marks = float(request.form.get('marks', 0))
+        attendance = float(request.form.get('attendance', 0))
         skills = request.form.get('skills', '')
         placement_status = request.form.get('placement_status', 'Preparing')
 
@@ -151,6 +154,7 @@ def edit(id):
         """, (name, roll, course, semester, marks, attendance, skills, placement_status, id))
         con.commit()
         con.close()
+        flash("Student record updated successfully!")
         return redirect(url_for('index'))
     
     cur.execute("SELECT * FROM students WHERE id=?", (id,))
@@ -165,6 +169,7 @@ def delete(id):
     cur.execute("DELETE FROM students WHERE id=?", (id,))
     con.commit()
     con.close()
+    flash("Student record deleted successfully!")
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
