@@ -3,18 +3,17 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 app = Flask(__name__)
 app.secret_key = "mca-student-performance-secret"
 
-# Students list with unique 'id'
 students = [
-    {"id": 1, "name": "Aman", "marks": 82, "attendance": 91},
-    {"id": 2, "name": "Rahul", "marks": 74, "attendance": 86},
-    {"id": 3, "name": "Priya", "marks": 91, "attendance": 95},
-    {"id": 4, "name": "Neha", "marks": 68, "attendance": 78},
-    {"id": 5, "name": "Rohit", "marks": 59, "attendance": 72},
-    {"id": 6, "name": "Simran", "marks": 88, "attendance": 93},
-    {"id": 7, "name": "Vikas", "marks": 77, "attendance": 84},
-    {"id": 8, "name": "Anjali", "marks": 95, "attendance": 97},
-    {"id": 9, "name": "Karan", "marks": 63, "attendance": 75},
-    {"id": 10, "name": "Pooja", "marks": 81, "attendance": 89},
+    {"name":"Aman","marks":82,"attendance":91},
+    {"name":"Rahul","marks":74,"attendance":86},
+    {"name":"Priya","marks":91,"attendance":95},
+    {"name":"Neha","marks":68,"attendance":78},
+    {"name":"Rohit","marks":59,"attendance":72},
+    {"name":"Simran","marks":88,"attendance":93},
+    {"name":"Vikas","marks":77,"attendance":84},
+    {"name":"Anjali","marks":95,"attendance":97},
+    {"name":"Karan","marks":63,"attendance":75},
+    {"name":"Pooja","marks":81,"attendance":89},
 ]
 
 def grade(marks):
@@ -27,56 +26,23 @@ def grade(marks):
 
 @app.route("/")
 def dashboard():
-    if not students:
-        return render_template("index.html", students=[], total=0, avg_marks=0, avg_att=0, passed=0, pass_rate=0)
     avg_marks = sum(s["marks"] for s in students) / len(students)
     avg_att = sum(s["attendance"] for s in students) / len(students)
     passed = sum(s["marks"] >= 50 for s in students)
-    pass_rate = (passed / len(students)) * 100
-    return render_template("index.html", students=students, total=len(students), avg_marks=avg_marks, avg_att=avg_att, passed=passed, pass_rate=pass_rate)
+    pass_rate = passed / len(students) * 100
+    return render_template(
+        "index.html",
+        students=students,
+        total=len(students),
+        avg_marks=avg_marks,
+        avg_att=avg_att,
+        passed=passed,
+        pass_rate=pass_rate
+    )
 
 @app.route("/students")
 def show_all():
     return render_template("students.html", students=students, grade=grade)
-
-# 1. ADD STUDENT ROUTE
-@app.route("/add", methods=["GET", "POST"])
-def add_student():
-    if request.method == "POST":
-        name = request.form.get("name")
-        marks = int(request.form.get("marks", 0))
-        attendance = int(request.form.get("attendance", 0))
-        
-        new_id = max([s["id"] for s in students], default=0) + 1
-        students.append({"id": new_id, "name": name, "marks": marks, "attendance": attendance})
-        flash("Student added successfully!", "success")
-        return redirect(url_for("show_all"))
-    return render_template("add.html")
-
-# 2. EDIT STUDENT ROUTE
-@app.route("/edit/<int:id>", methods=["GET", "POST"])
-def edit_student(id):
-    student = next((s for s in students if s["id"] == id), None)
-    if not student:
-        flash("Student not found!", "danger")
-        return redirect(url_for("show_all"))
-
-    if request.method == "POST":
-        student["name"] = request.form.get("name")
-        student["marks"] = int(request.form.get("marks", 0))
-        student["attendance"] = int(request.form.get("attendance", 0))
-        flash("Student updated successfully!", "success")
-        return redirect(url_for("show_all"))
-
-    return render_template("edit.html", student=student)
-
-# 3. DELETE STUDENT ROUTE
-@app.route("/delete/<int:id>")
-def delete_student(id):
-    global students
-    students = [s for s in students if s["id"] != id]
-    flash("Student deleted successfully!", "danger")
-    return redirect(url_for("show_all"))
 
 @app.route("/top")
 def top_students():
@@ -94,6 +60,94 @@ def low_attendance():
     found = [s for s in students if s["attendance"] < 75]
     return render_template("low_attendance.html", students=found)
 
+@app.route("/add", methods=["GET", "POST"])
+def add_student():
+    if request.method == "POST":
+        try:
+            name = request.form["name"].strip()
+            marks = float(request.form["marks"])
+            attendance = float(request.form["attendance"])
+            if not name or not (0 <= marks <= 100) or not (0 <= attendance <= 100):
+                raise ValueError
+            students.append({"name": name, "marks": marks, "attendance": attendance})
+            flash("Student added successfully.")
+            return redirect(url_for("show_all"))
+        except (ValueError, KeyError):
+            flash("Please enter valid values. Marks and attendance must be 0-100.")
+    return render_template("add.html")
+def add_student():
+    try:
+        name = request.form["name"].strip()
+        marks = float(request.form["marks"])
+        attendance = float(request.form["attendance"])
+
+        if not name or not (0 <= marks <= 100) or not (0 <= attendance <= 100):
+            return "Invalid input."
+
+        students.append({
+            "name": name,
+            "marks": marks,
+            "attendance": attendance
+        })
+
+        return redirect(url_for("show_students"))
+
+    except ValueError:
+        return "Please enter valid numbers."
+
+
+# ⬇️ YAHAN SE EDIT CODE PASTE KARO
+
+@app.route("/edit/<int:student_id>", methods=["GET", "POST"])
+def edit_student(student_id):
+    if student_id < 0 or student_id >= len(students):
+        return "Student not found", 404
+
+    student = students[student_id]
+
+    if request.method == "POST":
+        try:
+            name = request.form["name"].strip()
+            marks = float(request.form["marks"])
+            attendance = float(request.form["attendance"])
+
+            if not name or not (0 <= marks <= 100) or not (0 <= attendance <= 100):
+                return "Invalid input."
+
+            student["name"] = name
+            student["marks"] = marks
+            student["attendance"] = attendance
+
+            return redirect(url_for("show_students"))
+
+        except ValueError:
+            return "Please enter valid numbers."
+
+    return render_template(
+        "edit.html",
+        student=student,
+        student_id=student_id
+    )
+
+
+# ⬇️ ISKE TURANT BAAD DELETE CODE
+
+@app.route("/delete/<int:student_id>", methods=["POST"])
+def delete_student(student_id):
+    if student_id < 0 or student_id >= len(students):
+        return "Student not found", 404
+
+    students.pop(student_id)
+
+    return redirect(url_for("show_students"))
+@app.route("/analytics")
+def analytics():
+    return render_template(
+        "analytics.html",
+        labels=[s["name"] for s in students],
+        marks=[s["marks"] for s in students],
+        attendance=[s["attendance"] for s in students]
+    )
+
 if __name__ == "__main__":
-    app.run(debug=True)
-    
+    app.run(host="0.0.0.0", port=int(__import__("os").environ.get("PORT", 5000)))
