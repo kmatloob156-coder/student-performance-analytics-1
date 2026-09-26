@@ -34,7 +34,7 @@ def init_db():
     cur.execute("SELECT COUNT(*) FROM students")
     count = cur.fetchone()[0]
     
-    # Auto-insert 30 sample students if database is empty
+    # Auto-insert 30 sample students if table is empty
     if count == 0:
         sample_students = [
             ('Aarav Sharma', 'MCA202401', 'MCA', 'Sem 3', 85.5, 92.0, 'Python, SQL', 'Placed'),
@@ -174,4 +174,3 @@ def delete(id):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-    
