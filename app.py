@@ -18,8 +18,6 @@ def db():
 def init_db():
     con = db()
     cur = con.cursor()
-    
-    # Table Creation
     cur.execute("""CREATE TABLE IF NOT EXISTS students (
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         name TEXT NOT NULL, 
@@ -32,11 +30,9 @@ def init_db():
         placement_status TEXT DEFAULT 'Preparing'
     )""")
     
-    # Check if data already exists
     cur.execute("SELECT COUNT(*) FROM students")
     count = cur.fetchone()[0]
     
-    # Insert 30 sample students if table is empty
     if count == 0:
         sample_students = [
             ('Aarav Sharma', 'MCA202401', 'MCA', 'Sem 3', 85.5, 92.0, 'Python, SQL', 'Placed'),
@@ -87,8 +83,29 @@ def index():
     cur = con.cursor()
     cur.execute("SELECT * FROM students")
     students = cur.fetchall()
+    
+    total_students = len(students)
+    avg_marks = round(sum(s['marks'] for s in students) / total_students, 1) if total_students > 0 else 0
+    avg_attendance = round(sum(s['attendance'] for s in students) / total_students, 1) if total_students > 0 else 0
+    placed_count = sum(1 for s in students if s['placement_status'] == 'Placed')
+    
     con.close()
-    return render_template('index.html', students=students)
+    return render_template('index.html', students=students, total_students=total_students, avg_marks=avg_marks, avg_attendance=avg_attendance, placed_count=placed_count)
+
+@app.route('/analytics')
+def analytics():
+    con = db()
+    cur = con.cursor()
+    cur.execute("SELECT * FROM students")
+    students = cur.fetchall()
+    
+    total_students = len(students)
+    avg_marks = round(sum(s['marks'] for s in students) / total_students, 1) if total_students > 0 else 0
+    avg_attendance = round(sum(s['attendance'] for s in students) / total_students, 1) if total_students > 0 else 0
+    placed_count = sum(1 for s in students if s['placement_status'] == 'Placed')
+    
+    con.close()
+    return render_template('analytics.html', total_students=total_students, avg_marks=avg_marks, avg_attendance=avg_attendance, placed_count=placed_count)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
@@ -111,7 +128,7 @@ def add():
         con.commit()
         con.close()
         return redirect(url_for('index'))
-    return render_template('add.html')
+    return render_template('form.html', action='Add', student=None)
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
@@ -139,7 +156,7 @@ def edit(id):
     cur.execute("SELECT * FROM students WHERE id=?", (id,))
     student = cur.fetchone()
     con.close()
-    return render_template('edit.html', student=student)
+    return render_template('form.html', action='Edit', student=student)
 
 @app.route('/delete/<int:id>')
 def delete(id):
@@ -152,4 +169,4 @@ def delete(id):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-            
+    
