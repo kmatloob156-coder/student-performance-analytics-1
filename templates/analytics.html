@@ -1,4 +1,9 @@
-{% extends "base.html" %}{% block content %}<div class="container"><h1>Performance Analytics</h1><div class="chart"><canvas id="marks"></canvas></div><div class="chart"><canvas id="attendance"></canvas></div></div><script>
+{% extends "base.html" %}{% block content %}
+<div class="container"><h1>Performance Analytics</h1>
+<div class="chart"><canvas id="marks"></canvas></div>
+<div class="chart"><canvas id="attendance"></canvas></div>
+</div>
+<script>
 const labels={{labels|tojson}}, marks={{marks|tojson}}, attendance={{attendance|tojson}};
 new Chart(document.getElementById('marks'),{type:'bar',data:{labels:labels,datasets:[{label:'Marks %',data:marks}]},options:{responsive:true}});
 new Chart(document.getElementById('attendance'),{type:'line',data:{labels:labels,datasets:[{label:'Attendance %',data:attendance}]},options:{responsive:true}});
