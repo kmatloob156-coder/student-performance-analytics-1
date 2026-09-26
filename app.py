@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3, os
 from statistics import mean
