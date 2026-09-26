@@ -75,7 +75,71 @@ def add_student():
         except (ValueError, KeyError):
             flash("Please enter valid values. Marks and attendance must be 0-100.")
     return render_template("add.html")
+def add_student():
+    try:
+        name = request.form["name"].strip()
+        marks = float(request.form["marks"])
+        attendance = float(request.form["attendance"])
 
+        if not name or not (0 <= marks <= 100) or not (0 <= attendance <= 100):
+            return "Invalid input."
+
+        students.append({
+            "name": name,
+            "marks": marks,
+            "attendance": attendance
+        })
+
+        return redirect(url_for("show_students"))
+
+    except ValueError:
+        return "Please enter valid numbers."
+
+
+# ⬇️ YAHAN SE EDIT CODE PASTE KARO
+
+@app.route("/edit/<int:student_id>", methods=["GET", "POST"])
+def edit_student(student_id):
+    if student_id < 0 or student_id >= len(students):
+        return "Student not found", 404
+
+    student = students[student_id]
+
+    if request.method == "POST":
+        try:
+            name = request.form["name"].strip()
+            marks = float(request.form["marks"])
+            attendance = float(request.form["attendance"])
+
+            if not name or not (0 <= marks <= 100) or not (0 <= attendance <= 100):
+                return "Invalid input."
+
+            student["name"] = name
+            student["marks"] = marks
+            student["attendance"] = attendance
+
+            return redirect(url_for("show_students"))
+
+        except ValueError:
+            return "Please enter valid numbers."
+
+    return render_template(
+        "edit.html",
+        student=student,
+        student_id=student_id
+    )
+
+
+# ⬇️ ISKE TURANT BAAD DELETE CODE
+
+@app.route("/delete/<int:student_id>", methods=["POST"])
+def delete_student(student_id):
+    if student_id < 0 or student_id >= len(students):
+        return "Student not found", 404
+
+    students.pop(student_id)
+
+    return redirect(url_for("show_students"))
 @app.route("/analytics")
 def analytics():
     return render_template(
