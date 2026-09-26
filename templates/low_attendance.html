@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block content %}
+<div class="container"><div class="box"><h1>⚠️ Low Attendance (&lt;75%)</h1>
+{% if students %}<table><tr><th>Name</th><th>Attendance</th></tr>{% for s in students %}<tr><td>{{s.name}}</td><td>{{s.attendance}}%</td></tr>{% endfor %}</table>
+{% else %}<p>No student below 75% attendance.</p>{% endif %}
+</div></div>{% endblock %}
