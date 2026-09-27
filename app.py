@@ -4,16 +4,7 @@ app = Flask(__name__)
 app.secret_key = "mca-student-performance-secret"
 
 students = [
-    {"name":"Aman","marks":82,"attendance":91},
-    {"name":"Rahul","marks":74,"attendance":86},
-    {"name":"Priya","marks":91,"attendance":95},
-    {"name":"Neha","marks":68,"attendance":78},
-    {"name":"Rohit","marks":59,"attendance":72},
-    {"name":"Simran","marks":88,"attendance":93},
-    {"name":"Vikas","marks":77,"attendance":84},
-    {"name":"Anjali","marks":95,"attendance":97},
-    {"name":"Karan","marks":63,"attendance":75},
-    {"name":"Pooja","marks":81,"attendance":89},
+    
     {"id": 1, "name": "Aman Sharma", "marks": 82, "attendance": 91},
     {"id": 2, "name": "Rahul Verma", "marks": 74, "attendance": 86},
     {"id": 3, "name": "Priya Singh", "marks": 91, "attendance": 95},
