@@ -37,7 +37,7 @@ def grade(marks):
     if marks >= 80: return "A"
     if marks >= 70: return "B"
     if marks >= 60: return "C"
-    if marks >= 50: return "D"
+    if marks >= 40: return "D"
     return "F"
 
 @app.route("/")
@@ -93,6 +93,7 @@ def add_student():
     return render_template("add.html")
 def add_student():
     try:
+        id = float(reduest.form["id"])
         name = request.form["name"].strip()
         marks = float(request.form["marks"])
         attendance = float(request.form["attendance"])
