@@ -126,14 +126,12 @@ def edit_student(student_id):
 
     if request.method == "POST":
         try:
-            id= request.form["id"].strip()
             name = request.form["name"].strip()
             marks = float(request.form["marks"])
             attendance = float(request.form["attendance"])
 
-            if not id or not name or not (0 <= marks <= 100) or not (0 <= attendance <= 100):
+            if not name or not (0 <= marks <= 100) or not (0 <= attendance <= 100):
                 return "Invalid input."
-            student["id"] = id
             student["name"] = name
             student["marks"] = marks
             student["attendance"] = attendance
