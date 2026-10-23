@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="container">
+  <section class="formbox">
+    <h1>{{ mode }} Student</h1>
+    <p class="muted">Enter student details. Marks and attendance must be between 0 and 100.</p>
+
+    <form method="POST" action="{{ url_for('add_student') if mode == 'Add' else url_for('edit_student', student_id=student.student_id) }}">
+      <div class="formgrid">
+        <div class="field">
+          <label for="student_id">Student ID *</label>
+          <input id="student_id" name="student_id" maxlength="30" required
+                 value="{{ student.student_id if student else request.form.get('student_id', '') }}"
+                 {% if mode == 'Edit' %}readonly{% endif %}>
+        </div>
+
+        <div class="field">
+          <label for="name">Full Name *</label>
+          <input id="name" name="name" maxlength="100" required
+                 value="{{ student.name if student else request.form.get('name', '') }}">
+        </div>
+
+        <div class="field">
+          <label for="course">Course *</label>
+          <select id="course" name="course" required>
+            <option value="">Select course</option>
+            {% for c in courses %}
+            <option value="{{ c }}" {% if (student and student.course == c) or request.form.get('course') == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email"
+                 value="{{ student.email if student else request.form.get('email', '') }}">
+        </div>
+
+        <div class="field">
+          <label for="phone">WhatsApp Number</label>
+          <input id="phone" name="phone" type="tel"
+                 value="{{ student.phone if student else request.form.get('phone', '') }}"
+                 placeholder="+919876543210">
+        </div>
+
+        <div class="field">
+          <label for="marks">Marks (%) *</label>
+          <input id="marks" name="marks" type="number" min="0" max="100" step="0.1" required
+                 value="{{ student.marks if student else request.form.get('marks', '') }}">
+        </div>
+
+        <div class="field">
+          <label for="attendance">Attendance (%) *</label>
+          <input id="attendance" name="attendance" type="number" min="0" max="100" step="0.1" required
+                 value="{{ student.attendance if student else request.form.get('attendance', '') }}">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" type="submit">
+          {{ 'Save Student' if mode == 'Add' else 'Update Student' }}
+        </button>
+        <a class="btn btn-light" href="{{ url_for('show_all') }}">Cancel</a>
+      </div>
+    </form>
+  </section>
+</main>
+{% endblock %}
