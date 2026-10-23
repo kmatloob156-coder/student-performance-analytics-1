@@ -1,4 +1,9 @@
 __pycache__/
-*.pyc
-students.db
+*.py[cod]
+.venv/
+venv/
+env/
 .env
+instance/
+*.db
+.DS_Store
