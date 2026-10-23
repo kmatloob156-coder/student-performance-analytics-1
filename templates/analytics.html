@@ -1,10 +1,1 @@
-{% extends "base.html" %}{% block content %}
-<div class="container"><h1>Performance Analytics</h1>
-<div class="chart"><canvas id="marks"></canvas></div>
-<div class="chart"><canvas id="attendance"></canvas></div>
-</div>
-<script>
-const labels={{labels|tojson}}, marks={{marks|tojson}}, attendance={{attendance|tojson}};
-new Chart(document.getElementById('marks'),{type:'bar',data:{labels:labels,datasets:[{label:'Marks %',data:marks}]},options:{responsive:true}});
-new Chart(document.getElementById('attendance'),{type:'line',data:{labels:labels,datasets:[{label:'Attendance %',data:attendance}]},options:{responsive:true}});
-</script>{% endblock %}
+{% extends 'base.html' %}{% block content %}<main class="container"><h1>Performance Analytics</h1><form class="filters" method="get"><label for="course">Course:</label><select id="course" name="course"><option value="">All courses</option>{% for c in courses %}<option value="{{ c }}" {% if selected_course==c %}selected{% endif %}>{{ c }}</option>{% endfor %}</select><button class="btn-primary">Apply</button></form><div class="chartbox"><h3>Marks by Student</h3><canvas id="marksChart"></canvas></div><div class="chartbox"><h3>Attendance by Student</h3><canvas id="attendanceChart"></canvas></div></main><script>const labels={{ students|map(attribute='student_id')|list|tojson }};const names={{ students|map(attribute='name')|list|tojson }};const marks={{ students|map(attribute='marks')|list|tojson }};const attendance={{ students|map(attribute='attendance')|list|tojson }};new Chart(document.getElementById('marksChart'),{type:'bar',data:{labels:labels,datasets:[{label:'Marks (%)',data:marks,backgroundColor:'#4776e6'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{title:(items)=>names[items[0].dataIndex]}}},scales:{y:{min:0,max:100}}}});new Chart(document.getElementById('attendanceChart'),{type:'bar',data:{labels:labels,datasets:[{label:'Attendance (%)',data:attendance,backgroundColor:attendance.map(v=>v<75?'#ef4444':'#10b981')}]},options:{responsive:true,maintainAspectRatio:false,plugins:{tooltip:{callbacks:{title:(items)=>names[items[0].dataIndex]}}},scales:{y:{min:0,max:100}}}});</script>{% endblock %}
