@@ -1,46 +1,9 @@
 <!doctype html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Student Performance Analytics</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{% block title %}Student Performance Analytics{% endblock %}</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f4f7fb;color:#172033}
-nav{background:#172554;color:#fff;padding:15px 5%;display:flex;justify-content:space-between;align-items:center;gap:10px}
-nav b{font-size:18px} nav a{color:#fff;text-decoration:none;margin-left:14px;font-size:14px}
-.container{max-width:1100px;margin:25px auto;padding:0 16px}
-.hero{background:linear-gradient(135deg,#2563eb,#4338ca);color:#fff;padding:28px;border-radius:18px}
-.hero h1{margin-top:0}.btn{display:inline-block;background:#fff;color:#1d4ed8;padding:10px 15px;border-radius:9px;text-decoration:none;border:0;cursor:pointer;font-weight:bold}
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
-.card,.box{background:#fff;padding:18px;border-radius:15px;box-shadow:0 3px 14px #00000010}
-.num{font-size:28px;font-weight:bold;margin-top:7px}
-.tablebox{background:#fff;padding:16px;border-radius:15px;margin-top:20px;overflow:auto}
-table{width:100%;border-collapse:collapse}th,td{padding:11px;border-bottom:1px solid #eee;text-align:left;white-space:nowrap}
-.badge{padding:5px 9px;border-radius:20px;background:#e0e7ff}
-.form{background:#fff;padding:22px;border-radius:15px;max-width:650px}
-input{width:100%;padding:11px;margin:7px 0 15px;border:1px solid #d7dce5;border-radius:8px}
-.primary{background:#2563eb;color:white;padding:11px 16px;border:0;border-radius:9px;cursor:pointer}
-.alert{background:#dcfce7;padding:12px;border-radius:9px;margin:15px 0}
-.chart{background:#fff;padding:18px;border-radius:15px;margin-top:18px}
-.search{display:flex;gap:8px;margin:18px 0}.search input{margin:0}.search button{white-space:nowrap}
-@media(max-width:700px){.cards{grid-template-columns:repeat(2,1fr)}nav{display:block}nav div{margin-top:10px}nav a{display:inline-block;margin:4px 8px 0 0}.hero h1{font-size:25px}.search{display:block}.search button{margin-top:8px}}
-</style>
-</head>
-<body>
-<nav>
-<b>🎓 Student Analytics</b>
-<div>
-<a href="/">Dashboard</a>
-<a href="/students">Students</a>
-<a href="/top">Top 5</a>
-<a href="/analytics">Analytics</a>
-<a href="/add">+ Add</a>
-</div>
-</nav>
-{% with messages=get_flashed_messages() %}
-{% if messages %}<div class="container"><div class="alert">{{messages[0]}}</div></div>{% endif %}
-{% endwith %}
-{% block content %}{% endblock %}
-</body>
-</html>
+:root{--navy:#14213d;--blue:#2563eb;--purple:#5145cd;--bg:#f4f7fb;--ink:#172033;--muted:#64748b;--line:#e5eaf2;--green:#087f5b;--red:#b42318}*{box-sizing:border-box}body{margin:0;font:15px/1.5 Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}a{color:var(--blue);text-decoration:none}.nav{background:var(--navy);color:white;padding:14px max(16px,calc((100% - 1180px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.brand{font-weight:800;font-size:18px;color:white}.navlinks{display:flex;gap:7px;flex-wrap:wrap}.navlinks a{color:#e5edff;padding:8px 10px;border-radius:8px;font-size:13px}.navlinks a:hover{background:#ffffff1c;color:#fff}.container{max-width:1180px;margin:24px auto;padding:0 16px}.hero{background:linear-gradient(120deg,#1d4ed8,#5b3cc4);color:white;padding:27px;border-radius:18px;box-shadow:0 12px 25px #1d4ed81c}.hero h1{margin:0 0 8px;font-size:clamp(24px,4vw,34px)}.hero p{margin:0 0 18px;color:#e6eaff}.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:18px 0}.card,.panel,.formbox{background:white;border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 4px 14px #17203308}.metric-label{color:var(--muted);font-size:13px}.metric{font-size:29px;font-weight:800;margin-top:4px}.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.sectionhead h2,h1,h2{margin-top:0}.btn,button{border:0;border-radius:9px;padding:10px 13px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-weight:700;cursor:pointer;font-size:13px}.btn-primary,.primary{background:var(--blue);color:#fff}.btn-light{background:#edf2ff;color:#1d4ed8}.btn-danger{background:#fee4e2;color:#a61b1b}.btn-warn{background:#fff1c2;color:#825500}.btn-dark{background:#172554;color:white}.filters,.searchbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:15px 0}.filters input,.filters select,.searchbar input,.searchbar select, input,select{font:inherit;border:1px solid #d7deea;border-radius:9px;padding:11px 12px;background:white;color:var(--ink);min-width:0}.searchbar input{flex:1;min-width:180px}.tablewrap{overflow:auto;background:white;border:1px solid var(--line);border-radius:14px;margin-top:14px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{text-align:left;padding:12px 14px;border-bottom:1px solid #edf0f5;white-space:nowrap}th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#536179;background:#f8faff}tbody tr:hover{background:#fafcff}tbody tr:last-child td{border-bottom:0}.badge{display:inline-block;padding:4px 8px;border-radius:99px;background:#e8edff;color:#2b45a3;font-size:12px;font-weight:800}.low{background:#fff0ed;color:#a61b1b}.good{background:#dff8ed;color:#087f5b}.muted{color:var(--muted)}.alert{padding:12px 15px;border-radius:10px;margin:12px 0;background:#e0f2fe;color:#075985}.alert.success{background:#dcfce7;color:#166534}.alert.error{background:#fee2e2;color:#991b1b}.formbox{max-width:760px;margin:0 auto}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.field input,.field select{width:100%}.field small{display:block;color:var(--muted);margin-top:4px}.actions{display:flex;gap:7px;align-items:center}.actions form{margin:0}.empty{text-align:center;padding:30px;color:var(--muted)}.chartbox{background:white;border:1px solid var(--line);border-radius:15px;padding:18px;margin:16px 0;height:360px}.footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}@media(max-width:760px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.nav{align-items:flex-start}.navlinks{gap:2px}.navlinks a{padding:7px}.container{margin:16px auto}.hero{padding:22px}.formgrid{grid-template-columns:1fr}.metric{font-size:25px}.chartbox{height:300px}}@media(max-width:400px){.cards{grid-template-columns:1fr 1fr;gap:8px}.card{padding:12px}.metric{font-size:22px}}
+</style></head><body>
+<nav class="nav"><a class="brand" href="{{ url_for('dashboard') }}">🎓 Student Analytics</a><div class="navlinks"><a href="{{ url_for('dashboard') }}">Dashboard</a><a href="{{ url_for('show_all') }}">Students / Search</a><a href="{{ url_for('top_students') }}">Top 5</a><a href="{{ url_for('bottom_students') }}">Bottom 5</a><a href="{{ url_for('low_attendance') }}">Low Attendance</a><a href="{{ url_for('analytics') }}">Charts</a><a href="{{ url_for('add_student') }}">＋ Add</a></div></nav>
+<div class="container">{% with messages=get_flashed_messages(with_categories=true) %}{% if messages %}{% for category,message in messages %}<div class="alert {{ category }}">{{ message }}</div>{% endfor %}{% endif %}{% endwith %}</div>
+{% block content %}{% endblock %}<footer class="footer">Student Performance Analytics • MCA College Project • Flask + SQLite</footer></body></html>
