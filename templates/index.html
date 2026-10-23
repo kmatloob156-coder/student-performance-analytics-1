@@ -1,22 +1,4 @@
-{% extends "base.html" %}{% block content %}
-<div class="container">
-<section class="hero">
-<h1>Student Performance Analytics System </h1>
-<p>MCA Minor Project • Academic Performance Dashboard ,Developer by Matloob Ali and Mohd Saud</p>
-<a class="btn" href="/add">+ Add Student</a>
-</section>
-<div class="cards">
-<div class="card">Total Students<div class="num">{{total}}</div></div>
-<div class="card">Average Marks<div class="num">{{"%.2f"|format(avg_marks)}}%</div></div>
-<div class="card">Average Attendance<div class="num">{{"%.2f"|format(avg_att)}}%</div></div>
-<div class="card">Pass Rate<div class="num">{{"%.2f"|format(pass_rate)}}%</div></div>
-</div>
-<div class="tablebox">
-<h2>Quick Student Report</h2>
-<table><tr><th>Name</th><th>Marks</th><th>Attendance</th><th>Grade</th></tr>
-{% for s in students %}
-<tr><td>{{s.name}}</td><td>{{s.marks}}%</td><td>{{s.attendance}}%</td>
-<td><span class="badge">{% if s.marks>=90 %}A+{% elif s.marks>=80 %}A{% elif s.marks>=70 %}B{% elif s.marks>=60 %}C{% elif s.marks>=50 %}D{% else %}F{% endif %}</span></td></tr>
-{% endfor %}</table>
-</div>
-</div>{% endblock %}
+{% extends 'base.html' %}{% block content %}<main class="container"><section class="hero"><h1>Student Performance Analytics</h1><p>College-level student records, course-wise insights and attendance alerts.</p><a class="btn btn-light" href="{{ url_for('add_student') }}">＋ Add Student</a> <a class="btn btn-light" href="{{ url_for('show_all') }}">⌕ Search Records</a></section>
+<form class="filters" method="get"><label for="course">Course:</label><select id="course" name="course"><option value="">All courses</option>{% for c in courses %}<option value="{{ c }}" {% if selected_course==c %}selected{% endif %}>{{ c }}</option>{% endfor %}</select><button class="btn-primary">Apply filter</button><a class="btn btn-light" href="{{ url_for('dashboard') }}">Reset</a></form>
+<section class="cards"><div class="card"><div class="metric-label">Total students</div><div class="metric">{{ total }}</div></div><div class="card"><div class="metric-label">Average marks</div><div class="metric">{{ '%.1f'|format(avg_marks) }}%</div></div><div class="card"><div class="metric-label">Average attendance</div><div class="metric">{{ '%.1f'|format(avg_att) }}%</div></div><div class="card"><div class="metric-label">Attendance below 75%</div><div class="metric">{{ low }}</div><a href="{{ url_for('low_attendance',course=selected_course) if selected_course else url_for('low_attendance') }}">Review alerts →</a></div></section>
+<section class="panel"><div class="sectionhead"><h2>Student overview</h2><span class="muted">Pass rate: <b>{{ '%.1f'|format(pass_rate) }}%</b></span></div>{% if students %}<div class="tablewrap"><table><thead><tr><th>Student ID</th><th>Name</th><th>Course</th><th>Marks</th><th>Attendance</th><th>Grade</th></tr></thead><tbody>{% for s in students %}<tr><td><b>{{ s.student_id }}</b></td><td>{{ s.name }}</td><td>{{ s.course }}</td><td>{{ s.marks|round(1) }}%</td><td><span class="badge {% if s.attendance<75 %}low{% else %}good{% endif %}">{{ s.attendance|round(1) }}%</span></td><td><span class="badge">{{ 'A+' if s.marks>=90 else 'A' if s.marks>=80 else 'B' if s.marks>=70 else 'C' if s.marks>=60 else 'D' if s.marks>=50 else 'F' }}</span></td></tr>{% endfor %}</tbody></table></div>{% else %}<p class="empty">No records for this course yet.</p>{% endif %}</section></main>{% endblock %}
